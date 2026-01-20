@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <title>LOVE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(to bottom,
+                    #e1f5fe 0%,
+                    #b3e5fc 50%,
+                    #ffffff 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Mali', cursive;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            z-index: 2;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #03a9f4;
+            font-size: 1.9rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.05rem;
+            color: #0288d1;
+            margin-bottom: 20px;
+            opacity: 0.85;
+        }
+
+        .image-frame {
+            width: 240px;
+            aspect-ratio: 1 / 1;
+            padding: 10px;
+            border-radius: 26px;
+            border: 3px dashed rgba(3, 169, 244, 0.6);
+            margin: 0 auto 34px;
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .image-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 18px;
+            display: block;
+            background: #ffffff;
+        }
+
+        .time-wrapper {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 22px;
+        }
+
+        .time-card {
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 20px;
+            padding: 12px 8px;
+            min-width: 68px;
+            box-shadow: 0 6px 14px rgba(3, 169, 244, 0.22);
+        }
+
+        .time-value {
+            font-size: 1.7rem;
+            font-weight: 600;
+            color: #03a9f4;
+        }
+
+        .time-label {
+            font-size: 0.85rem;
+            color: #0288d1;
+            margin-top: 2px;
+        }
+
+        .open-btn {
+            margin-top: 6px;
+            padding: 12px 34px;
+            font-size: 1.05rem;
+            font-family: 'Mali', cursive;
+            border: none;
+            border-radius: 30px;
+            background: #03a9f4;
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        .open-btn:hover {
+            background: #039be5;
+        }
+
+        .heart {
+            position: fixed;
+            top: -30px;
+            font-size: 24px;
+            color: #03a9f4;
+            pointer-events: none;
+            animation: fall linear forwards;
+            z-index: 1;
+            opacity: 0.7;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .time-wrapper {
+                gap: 6px;
+            }
+
+            .time-card {
+                min-width: 52px;
+                padding: 6px 4px;
+                border-radius: 14px;
+            }
+
+            .time-value {
+                font-size: 1rem;
+            }
+
+            .time-label {
+                font-size: 0.65rem;
+            }
+        }
+
+        @media (min-width: 361px) and (max-width: 480px) {
+            .time-wrapper {
+                gap: 8px;
+            }
+
+            .time-card {
+                min-width: 58px;
+                padding: 8px 6px;
+                border-radius: 16px;
+            }
+
+            .time-value {
+                font-size: 1.15rem;
+            }
+
+            .time-label {
+                font-size: 0.7rem;
+            }
+        }
+
+        @media (min-width: 481px) and (max-width: 599px) {
+            .time-card {
+                min-width: 62px;
+                padding: 10px 6px;
+                border-radius: 18px;
+            }
+
+            .time-value {
+                font-size: 1.3rem;
+            }
+
+            .time-label {
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (min-width: 600px) and (max-width: 1024px) {
+            .time-card {
+                min-width: 66px;
+                padding: 12px 8px;
+            }
+
+            .time-value {
+                font-size: 1.5rem;
+            }
+
+            .time-label {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (orientation: landscape) and (max-height: 420px) {
+            .time-wrapper {
+                gap: 6px;
+                margin-bottom: 14px;
+            }
+
+            .time-card {
+                min-width: 50px;
+                padding: 6px 4px;
+            }
+
+            .time-value {
+                font-size: 0.95rem;
+            }
+
+            .time-label {
+                font-size: 0.6rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .heart {
+                animation: none;
+                display: none;
+            }
+        }
+
+        @media (max-width: 430px) {
+            .time-wrapper {
+                gap: 8px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            h1 {
+                font-size: 1.35rem;
+                line-height: 1.25;
+                margin-bottom: 8px;
+            }
+        }
+
+        @media (min-width: 361px) and (max-width: 480px) {
+            h1 {
+                font-size: 1.55rem;
+                line-height: 1.3;
+            }
+        }
+
+        @media (min-width: 481px) and (max-width: 599px) {
+            h1 {
+                font-size: 1.7rem;
+            }
+        }
+
+
+        @supports (padding: env(safe-area-inset-left)) {
+            body {
+                padding-left: env(safe-area-inset-left);
+                padding-right: env(safe-area-inset-right);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>นานแล้วนะที่เรารู้จักกัน</h1>
+
+        <div class="subtitle">
+            ตั้งแต่วันแรก… จนถึงวันนี้
+        </div>
+
+        <div class="image-frame">
+            <img src="img/a1.jpeg" alt="couple">
+        </div>
+
+        <div class="time-wrapper">
+            <div class="time-card">
+                <div class="time-value" id="days">0</div>
+                <div class="time-label">วัน</div>
+            </div>
+            <div class="time-card">
+                <div class="time-value" id="hours">0</div>
+                <div class="time-label">ชั่วโมง</div>
+            </div>
+            <div class="time-card">
+                <div class="time-value" id="minutes">0</div>
+                <div class="time-label">นาที</div>
+            </div>
+            <div class="time-card">
+                <div class="time-value" id="seconds">0</div>
+                <div class="time-label">วินาที</div>
+            </div>
+        </div>
+
+        <button class="open-btn" onclick="goNext()">
+            ไปต่อ
+        </button>
+    </div>
+
+    <script>
+        const START_DATE = new Date("2025-11-27T00:00:00+07:00");
+
+        function updateTime() {
+            const now = new Date(
+                new Date().toLocaleString("en-US", { timeZone: "Asia/Bangkok" })
+            );
+
+            let diff = now - START_DATE;
+
+            const seconds = Math.floor(diff / 1000) % 60;
+            const minutes = Math.floor(diff / (1000 * 60)) % 60;
+            const hours = Math.floor(diff / (1000 * 60 * 60)) % 24;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+            document.getElementById("days").innerText = days;
+            document.getElementById("hours").innerText = hours;
+            document.getElementById("minutes").innerText = minutes;
+            document.getElementById("seconds").innerText = seconds;
+        }
+
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        function goNext() {
+            location.href = "question.html";
+        }
+
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.className = "heart";
+            heart.innerText = "💙";
+
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.fontSize = (16 + Math.random() * 16) + "px";
+            heart.style.animationDuration = (4 + Math.random() * 3) + "s";
+
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 7000);
+        }
+
+        setInterval(createHeart, 300);
+    </script>
+
+</body>
+
+</html>

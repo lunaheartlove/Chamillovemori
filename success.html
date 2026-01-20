@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <title>LOVE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(to bottom,
+                    #e1f5fe 0%,
+                    #b3e5fc 50%,
+                    #ffffff 100%);
+            font-family: 'Mali', cursive;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            text-align: center;
+            padding: 32px 22px;
+            max-width: 420px;
+            z-index: 2;
+            animation: fadeUp 1s ease forwards;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: #03a9f4;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            font-size: 1.05rem;
+            color: #0288d1;
+            opacity: 0.85;
+            margin-bottom: 28px;
+        }
+
+        .image-frame {
+            width: 240px;
+            aspect-ratio: 1 / 1;
+            padding: 10px;
+            border-radius: 26px;
+            border: 3px dashed rgba(3, 169, 244, 0.6);
+            margin: 0 auto 34px;
+            box-sizing: border-box;
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .image-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 18px;
+            display: block;
+            background: #ffffff;
+        }
+
+        .confirm-text {
+            font-size: 1.15rem;
+            color: #0288d1;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .open-btn {
+            padding: 14px 48px;
+            font-size: 1.15rem;
+            font-family: 'Mali', cursive;
+            border: none;
+            border-radius: 30px;
+            background: #03a9f4;
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        .open-btn:hover {
+            background: #039be5;
+        }
+
+        .heart {
+            position: fixed;
+            top: -30px;
+            font-size: 22px;
+            color: #03a9f4;
+            pointer-events: none;
+            animation: fall linear forwards;
+            opacity: 0.55;
+            z-index: 1;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .container {
+                padding: 20px 16px;
+            }
+
+            h1 {
+                font-size: 1.45rem;
+                line-height: 1.25;
+                margin-bottom: 6px;
+            }
+
+            .subtitle {
+                font-size: 0.9rem;
+                margin-bottom: 18px;
+            }
+
+            .image-frame {
+                width: 185px;
+                margin-bottom: 22px;
+            }
+
+            .confirm-text {
+                font-size: 0.95rem;
+                line-height: 1.55;
+                margin-bottom: 22px;
+            }
+
+            .open-btn {
+                font-size: 0.95rem;
+                padding: 11px 30px;
+            }
+        }
+
+        @media (min-width: 361px) and (max-width: 480px) {
+            h1 {
+                font-size: 1.7rem;
+                line-height: 1.3;
+            }
+
+            .subtitle {
+                font-size: 0.95rem;
+            }
+
+            .image-frame {
+                width: 210px;
+            }
+
+            .confirm-text {
+                font-size: 1rem;
+            }
+        }
+
+        @media (min-width: 481px) and (max-width: 599px) {
+            h1 {
+                font-size: 1.9rem;
+            }
+
+            .image-frame {
+                width: 225px;
+            }
+        }
+
+        @media (min-width: 600px) and (max-width: 1024px) {
+            h1 {
+                font-size: 2.3rem;
+            }
+
+            .image-frame {
+                width: 280px;
+            }
+
+            .confirm-text {
+                font-size: 1.15rem;
+            }
+
+            .open-btn {
+                font-size: 1.15rem;
+                padding: 15px 48px;
+            }
+        }
+
+        @media (orientation: landscape) and (max-height: 420px) {
+            body {
+                overflow-y: auto;
+            }
+
+            .container {
+                padding-top: 16px;
+                padding-bottom: 16px;
+            }
+
+            h1 {
+                font-size: 1.35rem;
+                margin-bottom: 4px;
+            }
+
+            .subtitle {
+                margin-bottom: 12px;
+            }
+
+            .image-frame {
+                width: 165px;
+                margin-bottom: 16px;
+            }
+
+            .confirm-text {
+                font-size: 0.9rem;
+                margin-bottom: 16px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .heart {
+                animation: none;
+                display: none;
+            }
+        }
+
+        @media (max-width: 430px) {
+            .container {
+                max-width: 100%;
+            }
+        }
+
+        @supports (padding: env(safe-area-inset-left)) {
+            body {
+                padding-left: env(safe-area-inset-left);
+                padding-right: env(safe-area-inset-right);
+            }
+        }
+
+        .image-frame video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 18px;
+            background: #ffffff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>เราเป็นแฟนกันแล้วนะ</h1>
+
+        <div class="subtitle">
+            ตั้งแต่วินาทีนี้เป็นต้นไป
+        </div>
+
+        <div class="image-frame">
+            <video src="img/a4.mov" autoplay loop muted playsinline>
+            </video>
+        </div>
+
+
+        <div class="confirm-text">
+            ขอบคุณที่เลือกเรา<br>
+            ต่อจากนี้ ขอจับมือเดินไปด้วยกันนะ
+        </div>
+
+        <button class="open-btn" onclick="location.href='love-game.html'">
+            ลองเล่นอะไรน่ารัก ๆ
+        </button>
+
+    </div>
+
+    <script>
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.className = "heart";
+            heart.innerText = "💙";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.fontSize = (14 + Math.random() * 18) + "px";
+            heart.style.animationDuration = (4 + Math.random() * 3) + "s";
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 7000);
+        }
+
+        setInterval(createHeart, 300);
+    </script>
+
+</body>
+
+</html>

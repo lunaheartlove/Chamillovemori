@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <title>LOVE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(to bottom,
+                    #e1f5fe 0%,
+                    #b3e5fc 50%,
+                    #ffffff 100%);
+            font-family: 'Mali', cursive;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 420px;
+            padding: 30px 22px;
+            z-index: 2;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #03a9f4;
+            margin-bottom: 10px;
+        }
+
+        .hint {
+            font-size: 1rem;
+            color: #0288d1;
+            opacity: 0.85;
+            margin-bottom: 26px;
+        }
+
+        .big-heart {
+            font-size: 6.5rem;
+            color: #03a9f4;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.15s ease;
+        }
+
+        .big-heart:active {
+            transform: scale(1.25);
+        }
+
+        .progress-box {
+            margin-top: 26px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 22px;
+            padding: 16px;
+            box-shadow: 0 6px 18px rgba(3, 169, 244, 0.25);
+        }
+
+        .progress-bar {
+            height: 14px;
+            background: #e1f5fe;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, #03a9f4, #81d4fa);
+            transition: width 0.2s ease;
+        }
+
+        .progress-text {
+            font-size: 0.95rem;
+            color: #0288d1;
+        }
+
+        .popup-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(6px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .popup-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .popup {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 26px;
+            padding: 28px 26px;
+            text-align: center;
+            box-shadow: 0 14px 40px rgba(3, 169, 244, 0.3);
+            transform: scale(0.85);
+            transition: transform 0.4s ease;
+        }
+
+        .popup-overlay.show .popup {
+            transform: scale(1);
+        }
+
+        .popup-text {
+            font-size: 1.25rem;
+            color: #03a9f4;
+            line-height: 1.7;
+            margin-bottom: 18px;
+        }
+
+        .open-btn {
+            padding: 12px 38px;
+            font-size: 1.05rem;
+            font-family: 'Mali', cursive;
+            border: none;
+            border-radius: 30px;
+            background: #03a9f4;
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        .open-btn:hover {
+            background: #039be5;
+        }
+
+        .heart {
+            position: fixed;
+            top: -30px;
+            font-size: 22px;
+            color: #03a9f4;
+            pointer-events: none;
+            animation: fall linear forwards;
+            opacity: 0.55;
+            z-index: 1;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .container {
+                padding: 18px 14px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+                line-height: 1.25;
+                margin-bottom: 6px;
+            }
+
+            .hint {
+                font-size: 0.85rem;
+                margin-bottom: 18px;
+            }
+
+            .big-heart {
+                font-size: 4.8rem;
+            }
+
+            .progress-box {
+                margin-top: 18px;
+                padding: 12px;
+            }
+
+            .progress-bar {
+                height: 10px;
+            }
+
+            .progress-text {
+                font-size: 0.8rem;
+            }
+
+            .popup {
+                padding: 20px 18px;
+            }
+
+            .popup-text {
+                font-size: 1rem;
+                line-height: 1.5;
+            }
+
+            .open-btn {
+                font-size: 0.9rem;
+                padding: 10px 26px;
+            }
+        }
+
+        @media (min-width: 361px) and (max-width: 480px) {
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            .hint {
+                font-size: 0.9rem;
+            }
+
+            .big-heart {
+                font-size: 5.6rem;
+            }
+
+            .progress-bar {
+                height: 12px;
+            }
+
+            .popup-text {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (min-width: 481px) and (max-width: 599px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .big-heart {
+                font-size: 6rem;
+            }
+        }
+
+        @media (min-width: 600px) and (max-width: 1024px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .big-heart {
+                font-size: 7.2rem;
+            }
+
+            .progress-box {
+                padding: 18px;
+            }
+
+            .popup-text {
+                font-size: 1.3rem;
+            }
+
+            .open-btn {
+                font-size: 1.1rem;
+                padding: 14px 44px;
+            }
+        }
+
+        @media (orientation: landscape) and (max-height: 420px) {
+            body {
+                overflow-y: auto;
+            }
+
+            .container {
+                padding: 14px 14px;
+            }
+
+            h1 {
+                font-size: 1.25rem;
+                margin-bottom: 4px;
+            }
+
+            .hint {
+                font-size: 0.8rem;
+                margin-bottom: 12px;
+            }
+
+            .big-heart {
+                font-size: 4.2rem;
+            }
+
+            .progress-box {
+                margin-top: 12px;
+                padding: 10px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .heart {
+                animation: none;
+                display: none;
+            }
+
+            .big-heart {
+                transition: none;
+            }
+
+            .progress-fill {
+                transition: none;
+            }
+        }
+
+        @media (max-width: 430px) {
+            .container {
+                max-width: 100%;
+            }
+        }
+
+        @supports (padding: env(safe-area-inset-left)) {
+            body {
+                padding-left: env(safe-area-inset-left);
+                padding-right: env(safe-area-inset-right);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>ลองเติมหัวใจดูสิ</h1>
+        <div class="hint">กดหัวใจไปเรื่อย ๆ จนกว่าจะเต็มนะ</div>
+
+        <div class="big-heart" onclick="addLove()">💙</div>
+
+        <div class="progress-box">
+            <div class="progress-bar">
+                <div class="progress-fill" id="fill"></div>
+            </div>
+            <div class="progress-text" id="percent">0%</div>
+        </div>
+    </div>
+
+    <div class="popup-overlay" id="popup">
+        <div class="popup">
+            <div class="popup-text">
+                ความรักเต็มแล้วนะ<br>
+                ต่อจากนี้ขออยู่ข้าง ๆ กันไปนาน ๆ
+            </div>
+
+            <button class="open-btn" onclick="closePopup()">
+                สุดท้ายแล้ว
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let love = 0;
+
+        function addLove() {
+            if (love >= 100) return;
+
+            love += 10;
+            if (love > 100) love = 100;
+
+            document.getElementById("fill").style.width = love + "%";
+            document.getElementById("percent").innerText = love + "%";
+
+            if (love === 100) {
+                document.getElementById("popup").classList.add("show");
+            }
+        }
+
+        function closePopup() {
+            location.href = "music.html";
+        }
+
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.className = "heart";
+            heart.innerText = "💙";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.fontSize = (14 + Math.random() * 16) + "px";
+            heart.style.animationDuration = (4 + Math.random() * 3) + "s";
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 7000);
+        }
+
+        setInterval(createHeart, 320);
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <title>LOVE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(to bottom,
+                    #e1f5fe 0%,
+                    #b3e5fc 50%,
+                    #ffffff 100%);
+            font-family: 'Mali', cursive;
+            overflow: hidden;
+        }
+
+        .countdown-overlay {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 10;
+            backdrop-filter: blur(8px);
+            background: linear-gradient(to bottom,
+                    rgba(225, 245, 254, 0.92),
+                    rgba(179, 229, 252, 0.92),
+                    rgba(255, 255, 255, 0.92));
+            transition: opacity 0.6s ease;
+        }
+
+        .countdown-overlay.hide {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .countdown-ring {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 3px solid rgba(3, 169, 244, 0.35);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow:
+                0 0 40px rgba(3, 169, 244, 0.35),
+                inset 0 0 20px rgba(3, 169, 244, 0.25);
+        }
+
+        .countdown {
+            font-size: 5.5rem;
+            font-weight: 600;
+            color: #03a9f4;
+            text-shadow: 0 8px 25px rgba(3, 169, 244, 0.45);
+            animation: numberPop 1s ease-in-out infinite;
+        }
+
+        @keyframes numberPop {
+            0% {
+                transform: scale(1);
+            }
+
+            40% {
+                transform: scale(1.15);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .countdown-text {
+            margin-top: 25px;
+            font-size: 1.1rem;
+            color: #0288d1;
+            opacity: 0.85;
+        }
+
+        .container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 30px 22px;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            position: relative;
+            z-index: 2;
+            /* เนื้อหาอยู่เหนือหัวใจ */
+        }
+
+        .container.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h1 {
+            color: #03a9f4;
+            font-size: 2.1rem;
+            font-weight: 600;
+            margin-bottom: 14px;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 28px;
+            gap: 14px;
+        }
+
+        .divider span {
+            height: 1px;
+            width: 56px;
+            background: linear-gradient(to right,
+                    rgba(3, 169, 244, 0),
+                    rgba(3, 169, 244, 0.45),
+                    rgba(3, 169, 244, 0));
+        }
+
+        .divider .heart-dot {
+            font-size: 0.95rem;
+            color: #03a9f4;
+        }
+
+        .image-frame {
+            width: 240px;
+            aspect-ratio: 1 / 1;
+            padding: 10px;
+            border-radius: 26px;
+            border: 3px dashed rgba(3, 169, 244, 0.6);
+            margin: 0 auto 36px;
+        }
+
+        .image-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 18px;
+            background: #ffffff;
+        }
+
+        .open-btn {
+            padding: 14px 48px;
+            font-size: 1.15rem;
+            font-family: 'Mali', cursive;
+            border: none;
+            border-radius: 30px;
+            background: #03a9f4;
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        .open-btn:hover {
+            background: #039be5;
+        }
+
+        /* ===== แก้ตรงนี้ ===== */
+        .heart {
+            position: fixed;
+            top: -30px;
+            font-size: 22px;
+            color: #03a9f4;
+            pointer-events: none;
+            animation: fall linear forwards;
+            opacity: 0.55;
+            z-index: 0;
+            /* อยู่หลังเนื้อหา */
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 360px) {
+            h1 {
+                font-size: 1.25rem;
+                line-height: 1.2;
+                margin-bottom: 8px;
+            }
+
+            .divider {
+                margin-bottom: 16px;
+                gap: 10px;
+            }
+
+            .divider span {
+                width: 36px;
+            }
+
+            .image-frame {
+                width: 185px;
+                margin-bottom: 22px;
+            }
+
+            .open-btn {
+                font-size: 1rem;
+                padding: 12px 30px;
+            }
+
+            .countdown-ring {
+                width: 130px;
+                height: 130px;
+            }
+
+            .countdown {
+                font-size: 3.8rem;
+            }
+
+            .countdown-text {
+                font-size: 0.9rem;
+                margin-top: 14px;
+            }
+
+            .container {
+                padding-top: 16px;
+                padding-bottom: 18px;
+            }
+        }
+
+        @media (min-width: 361px) and (max-width: 480px) {
+            h1 {
+                font-size: 1.5rem;
+                line-height: 1.3;
+            }
+
+            .image-frame {
+                width: 210px;
+            }
+
+            .countdown-ring {
+                width: 155px;
+                height: 155px;
+            }
+
+            .countdown {
+                font-size: 4.5rem;
+            }
+        }
+
+        @media (min-width: 481px) and (max-width: 599px) {
+            h1 {
+                font-size: 1.75rem;
+            }
+
+            .image-frame {
+                width: 225px;
+            }
+        }
+
+        @media (min-width: 600px) and (max-width: 1024px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .image-frame {
+                width: 280px;
+            }
+
+            .open-btn {
+                font-size: 1.2rem;
+                padding: 15px 52px;
+            }
+        }
+
+        @media (orientation: landscape) and (max-height: 420px) {
+            body {
+                overflow-y: auto;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+                margin-bottom: 6px;
+            }
+
+            .divider {
+                margin-bottom: 12px;
+            }
+
+            .image-frame {
+                width: 165px;
+                margin-bottom: 16px;
+            }
+
+            .countdown-ring {
+                width: 115px;
+                height: 115px;
+            }
+
+            .countdown {
+                font-size: 3.2rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .heart {
+                animation: none;
+                display: none;
+            }
+
+            .countdown {
+                animation: none;
+            }
+        }
+
+        @media (max-width: 430px) {
+            .container {
+                padding-left: 18px;
+                padding-right: 18px;
+            }
+        }
+
+        @supports (padding: env(safe-area-inset-left)) {
+            body {
+                padding-left: env(safe-area-inset-left);
+                padding-right: env(safe-area-inset-right);
+            }
+        }
+
+        .image-frame video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 18px;
+            background: #ffffff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="countdown-overlay" id="overlay">
+        <div class="countdown-ring">
+            <div class="countdown" id="countdown">5</div>
+        </div>
+        <div class="countdown-text">
+            รออีกนิดนะ ขอเตรียมใจก่อน
+        </div>
+    </div>
+
+    <div class="container" id="content">
+        <div>
+            <h1>เป็นแฟนกันมั้ย</h1>
+
+            <div class="divider">
+                <span></span>
+                <div class="heart-dot">💙</div>
+                <span></span>
+            </div>
+
+            <div class="image-frame">
+                <video src="img/a3.mov" autoplay loop muted playsinline>
+                </video>
+            </div>
+
+
+
+            <button class="open-btn" onclick="acceptLove()">ตกลง</button>
+        </div>
+    </div>
+
+    <script>
+        function acceptLove() {
+            location.href = "success.html";
+        }
+
+        let timeLeft = 5;
+        const countdownEl = document.getElementById("countdown");
+        const overlay = document.getElementById("overlay");
+        const content = document.getElementById("content");
+
+        const timer = setInterval(() => {
+            timeLeft--;
+            countdownEl.textContent = timeLeft;
+
+            if (timeLeft === 0) {
+                clearInterval(timer);
+                overlay.classList.add("hide");
+
+                setTimeout(() => {
+                    overlay.style.display = "none";
+                    content.classList.add("show");
+                }, 600);
+            }
+        }, 1000);
+
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.className = "heart";
+            heart.innerText = "💙";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.fontSize = (14 + Math.random() * 16) + "px";
+            heart.style.animationDuration = (4 + Math.random() * 3) + "s";
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 7000);
+        }
+
+        setInterval(createHeart, 320);
+    </script>
+
+</body>
+
+</html>
